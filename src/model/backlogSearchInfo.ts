@@ -1,44 +1,21 @@
-import { SearchInfo } from './searchInfoModel';
+import { SearchInfo, defaultSearchInfo } from './searchInfoModel';
 import { keywordsArrToStr } from '../util';
-import { SearchInfoManager } from './searchInfoManager';
+import { BaseSearchInfo } from './baseSearchInfo';
 
 /**
  * backlog用
  */
-export class BacklogSearchInfo implements SearchInfo {
+export class BacklogSearchInfo extends BaseSearchInfo  {
   readonly searchType: string = 'backlog'
   readonly searchTypeName: string  = 'backlog'
 
-  keywords: string[] = []
-  title: string | null = null
-  endpoint: string | null = null
-  auth: string | null = null
-  email: undefined = undefined
-  projectKey: string | null = null
-  // headers:Headers = {}
+  email = undefined 
 
-  token: string = ''
-
-  constructor(searchinfo: SearchInfo) {
-    console.log(searchinfo)
-    if (this.searchType != searchinfo.searchType ) throw new Error('invalid search type')
-    this.endpoint = searchinfo.endpoint
-    this.auth = searchinfo.auth || null
-    this.title = searchinfo.title
-  }
-
-  load = async (target: string): Promise<SearchInfo> => {
-    const searchInfoManager = await SearchInfoManager.init()
-    const searchInfo: SearchInfo = searchInfoManager.getSearchInfo(target)
-    return searchInfo
-  }
-
-  isError = () => {
-    return false
-  }
-
-  getErrorMessages() {
-    return {}
+  constructor(searchInfo?:SearchInfo){
+    searchInfo = searchInfo ? searchInfo : defaultSearchInfo('backlog')
+    super(searchInfo)
+    if (this.searchType != searchInfo.searchType) throw new Error('invalid search type')
+    console.log(searchInfo)
   }
 
   get uri(): string {

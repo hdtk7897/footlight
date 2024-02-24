@@ -14,8 +14,8 @@ export class BacklogRefInfo implements RefInfo {
  
   confluenceSearchInfo: ConfluenceSearchInfo;
   
-  constructor(searchInfo: SearchInfo) {
-    this.confluenceSearchInfo = new ConfluenceSearchInfo(searchInfo)
+  constructor() {
+    this.confluenceSearchInfo = new ConfluenceSearchInfo()
   }
 
   get searchinfo(): SearchInfo{

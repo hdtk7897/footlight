@@ -1,5 +1,5 @@
 import React  from "react";
-import { SearchInfo, SearchInfoKey  } from '../model/searchInfoModel'
+import { SearchInfo, SearchConfigKey  } from '../model/searchInfoModel'
 
 
 // 各検索先ごとの設定値の入力フォームを作成する
@@ -15,14 +15,15 @@ function SearchTypeFields(prop:{searchInfo:SearchInfo ,upsertSearchInfo:Function
       prop.saveSearchInfo()
   }
 
-  const createInputForm = (key:SearchInfoKey) => {
+  const createInputForm = (key:SearchConfigKey) => {
     if (!prop.searchInfo) return null
     let val = prop.searchInfo[key]
-    if (val === undefined) return null
     const keyType = typeof val
-    console.log(`key:${key}, keyType:${keyType}`)
+    console.log(`key:${key}, keyType:${keyType}, val:${val}`)
+    if (val === undefined) return null
     switch (keyType) {
       case 'string':
+      case 'object':
         val = val as string
         return (
           <>

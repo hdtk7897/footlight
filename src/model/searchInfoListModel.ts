@@ -13,12 +13,11 @@ type SearchInfoList = {
 type SearchType =  keyof typeof searchInfoLists;
 
 const searchInfoLists:SearchInfoList = {
-  backlog: new BacklogSearchInfo(defaultSearchInfo('backlog')),
-  confluence: new ConfluenceSearchInfo(defaultSearchInfo('confluence')),
+  backlog: new BacklogSearchInfo(),
+  confluence: new ConfluenceSearchInfo(),
   other: defaultSearchInfo(),
   none: newSearchInfo
 }
-
 
 export type { SearchInfo, FixedSearchInfo, SearchInfoList, FixedSearchInfoList, SearchType };
 export { searchInfoLists };

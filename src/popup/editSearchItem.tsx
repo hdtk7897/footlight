@@ -24,13 +24,12 @@ const EditSearchItem = () => {
   }
 
   const upsertSearchInfo = (val:SearchInfo) => {
-    if (searchInfoObj.isError()) return
     setChangeFlag(true)
     setSearchInfoObj(val)
   }
   
   const saveSearchInfo = () => {
-    if(!changeFlag) return
+    if (!changeFlag || searchInfoObj.isError) return
     const awaitSaveSearchInfo = async () => {
       const searchInfoManager = await SearchInfoManager.init()
       if (isNew()){
@@ -40,22 +39,21 @@ const EditSearchItem = () => {
     }
     awaitSaveSearchInfo();
   }
-  
 
   const changeSearchType = (e:SearchType) => {
+    let changeSearchInfoObj:SearchInfo
     switch (e) {
       case 'backlog':
-        setSearchInfoObj(new BacklogSearchInfo(searchInfoObj))
+        changeSearchInfoObj = new BacklogSearchInfo()
         break
       case 'confluence':
-        setSearchInfoObj(new ConfluenceSearchInfo(searchInfoObj))
+        changeSearchInfoObj = new ConfluenceSearchInfo()
         break
       default:
-        setSearchInfoObj(newSearchInfo)
+        changeSearchInfoObj = newSearchInfo
     }
-    const templateSearchInfo = searchInfoLists[e]
-    templateSearchInfo.title = "新規作成"
-    upsertSearchInfo(templateSearchInfo)
+    changeSearchInfoObj.title = "新規作成"
+    upsertSearchInfo(changeSearchInfoObj)
   }
   
   const searchTypeList = () => {
@@ -92,11 +90,12 @@ const EditSearchItem = () => {
     return searchInfoKey === '0'
   }
   
-  const errorMessages : {[key:string]:string} = searchInfoObj.getErrorMessages()
 
   useLayoutEffect(() => {
     getSearchInfoData();
   }, []);  
+
+  const errorMessages : {[key:string]:string} = searchInfoObj.errorMessages
 
   return (
     <>
@@ -111,7 +110,7 @@ const EditSearchItem = () => {
       </div>
       <div>
         <SearchTypeFields
-          searchInfo={searchInfoObj as FixedSearchInfo}
+          searchInfo={searchInfoObj as SearchInfo }
           upsertSearchInfo={upsertSearchInfo}
           saveSearchInfo={saveSearchInfo}
         />

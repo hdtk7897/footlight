@@ -13,11 +13,11 @@ type SearchInfoConfig =  {
 
 type SearchInfo = 
 SearchInfoConfig & {
-    isError: () => boolean;
-    getErrorMessages: () => {[key:string]:string};
+    isError: boolean;
+    errorMessages: {[key:string]:string};
 }
 
-type SearchInfoKey = keyof SearchInfo;
+type SearchConfigKey = keyof SearchInfoConfig;
 
 type FixedSearchInfo = SearchInfo & {
   // null許可をなくす
@@ -49,12 +49,8 @@ const defaultSearchInfo = (searchType?:string):SearchInfo => {
     email: null,
     auth: null,
     projectKey: undefined,
-    isError() {
-      return false
-    },
-    getErrorMessages() {
-      return {}
-    }
+    isError:false,
+    errorMessages: {}
   }
 }
 
@@ -66,12 +62,8 @@ const newSearchInfo:SearchInfo = {
   email:null,
   auth: null,
   projectKey: null,
-  isError() {
-    return false
-  },
-  getErrorMessages() {
-    return {}
-  }
+  isError: false,
+  errorMessages: {}
 }
 
 type Headers = {
@@ -79,6 +71,6 @@ type Headers = {
   Authorization?: string;
 }
 
-export type { SearchInfoConfig, SearchInfo, FixedSearchInfo, SearchInfoKey, urlInput, Headers}
+export type { SearchInfoConfig, SearchInfo, FixedSearchInfo, SearchConfigKey, urlInput, Headers}
 export { isFixedSearchInfo, defaultSearchInfo, newSearchInfo };
 

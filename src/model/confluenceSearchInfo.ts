@@ -1,49 +1,24 @@
-import { SearchInfo } from './searchInfoModel';
-import { ApiInfo, Headers, Method } from './apiInfo';
+import { SearchInfo, defaultSearchInfo } from './searchInfoModel';
+import { Headers } from './apiInfo';
 import { keywordsArrToStr } from '../util';
-import { SearchInfoManager } from './searchInfoManager';
 import { Buffer } from 'buffer';
+import { BaseSearchInfo } from './baseSearchInfo';
 
 /**
  * Confluence用
  */
-export class ConfluenceSearchInfo implements SearchInfo, ApiInfo {
+
+export class ConfluenceSearchInfo extends BaseSearchInfo  {
   readonly searchType:string = 'confluence'
   readonly searchTypeName: string  = 'confluence'
 
-  keywords:string[] = []
-  title:string | null  = null
-  endpoint:string | null = null
-  auth:string | null = null
-  email:string | null = null
-  projectKey: string | null | undefined = undefined
-  method: Method = 'GET'
+  projectKey = undefined
 
-  token:string = ''
-
-  constructor(searchinfo:SearchInfo){
-    console.log(searchinfo)
-    if (!searchinfo) return
-    if (this.searchType != searchinfo.searchType) throw new Error('invalid search type')
-    this.endpoint = searchinfo.endpoint
-    this.auth = searchinfo.auth || null
-    this.email = searchinfo.email as string
-    this.title = searchinfo.title
-  }
-
-  load = async(target:string): Promise<SearchInfo> => {
-    const searchInfoManager = await SearchInfoManager.init()
-    const searchInfo:SearchInfo = searchInfoManager.getSearchInfo(target)
-    return searchInfo
-  }
-
-  isError = () => {
-    if (!this.endpoint) return true
-    return false
-  }
-
-  getErrorMessages() {
-    return {}
+  constructor(searchInfo?:SearchInfo){
+    searchInfo = searchInfo ? searchInfo : defaultSearchInfo('confluence')
+    super(searchInfo)
+    if (this.searchType != searchInfo.searchType) throw new Error('invalid search type')
+    console.log(searchInfo)
   }
 
   get uriWithParam(): string {
@@ -56,6 +31,10 @@ export class ConfluenceSearchInfo implements SearchInfo, ApiInfo {
       Accept: 'application/json',
       Authorization: `Basic ${this.base64auth}`,
     }
+  }
+
+  get errorMessages(): {[key:string]:string}  {
+    return {}
   }
 
   protected get base64auth(): string {
