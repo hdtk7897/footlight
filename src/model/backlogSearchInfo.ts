@@ -1,4 +1,4 @@
-import { SearchInfo, defaultSearchInfo } from './searchInfoModel';
+import { SearchInfo } from './searchInfoModel';
 import { keywordsArrToStr } from '../util';
 import { BaseSearchInfo } from './baseSearchInfo';
 
@@ -12,9 +12,8 @@ export class BacklogSearchInfo extends BaseSearchInfo  {
   email = undefined 
 
   constructor(searchInfo?:SearchInfo){
-    searchInfo = searchInfo ? searchInfo : defaultSearchInfo('backlog')
     super(searchInfo)
-    if (this.searchType != searchInfo.searchType) throw new Error('invalid search type')
+    if (searchInfo && this.searchType != searchInfo.searchType) throw new Error('invalid search type')
     console.log(searchInfo)
   }
 

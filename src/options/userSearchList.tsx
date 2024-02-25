@@ -1,14 +1,15 @@
 import { useState, useLayoutEffect } from "react";
 import { SearchInfoManager } from '../model/searchInfoManager';
-import { SearchInfo, newSearchInfo } from '../model/searchInfoModel';
+import { SearchInfo } from '../model/searchInfoModel';
 import { Link } from 'react-router-dom';
+import { BaseSearchInfo } from "../model/baseSearchInfo";
 
 type searchInfoList = { [key: string]: SearchInfo; }
 
 const UserSearchList = () => {
   const [userSearchList, setUserSearchList] = useState<searchInfoList>(
     {
-    '0' : newSearchInfo
+    '0' : new BaseSearchInfo()
   })
 
 

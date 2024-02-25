@@ -2,13 +2,13 @@
 
 type SearchInfoConfig =  {
   // keywords:string[];
-  title: string | null;
-  searchType: string | null;
-  searchTypeName: string | null;
-  endpoint: string | null;
-  email: string | null | undefined;
-  auth: string | null | undefined;
-  projectKey: string | null | undefined;
+  title: string ;
+  searchType: string ;
+  searchTypeName: string ;
+  endpoint: string ;
+  email: string | undefined;
+  auth: string | undefined;
+  projectKey: string | undefined;
 }
 
 type SearchInfo = 
@@ -40,37 +40,11 @@ type urlInput = baseInput & {
   prefix:'https://'
 }
 
-const defaultSearchInfo = (searchType?:string):SearchInfo => {
-    return {
-    title : null, 
-    searchType: searchType || "other",
-    searchTypeName: "その他",
-    endpoint: null,
-    email: null,
-    auth: null,
-    projectKey: undefined,
-    isError:false,
-    errorMessages: {}
-  }
-}
-
-const newSearchInfo:SearchInfo = {
-  title: '新規作成',
-  searchType: 'none',
-  searchTypeName: '未設定',
-  endpoint: null,
-  email:null,
-  auth: null,
-  projectKey: null,
-  isError: false,
-  errorMessages: {}
-}
-
 type Headers = {
   Accept?: string;
   Authorization?: string;
 }
 
 export type { SearchInfoConfig, SearchInfo, FixedSearchInfo, SearchConfigKey, urlInput, Headers}
-export { isFixedSearchInfo, defaultSearchInfo, newSearchInfo };
+export { isFixedSearchInfo };
 

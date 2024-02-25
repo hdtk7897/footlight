@@ -1,17 +1,17 @@
-import { SearchInfo, SearchConfigKey, defaultSearchInfo } from './searchInfoModel';
+import { SearchInfo, SearchConfigKey } from './searchInfoModel';
 import { ApiInfo, Headers, Method } from './apiInfo';
 import { SearchInfoManager } from './searchInfoManager';
 
 export class BaseSearchInfo implements ApiInfo, SearchInfo {
-  readonly searchType:string = 'base'
-  readonly searchTypeName: string  = 'base'
+  readonly searchType:string = 'none'
+  readonly searchTypeName: string  = 'none'
 
   keywords:string[] = []
-  title:string | null  = null
-  endpoint:string | null = null
-  auth:string | null | undefined = null
-  email:string | null | undefined = null
-  projectKey: string | null | undefined = null
+  title = '新規作成'
+  endpoint = ''
+  auth: string | undefined  = ''
+  email: string | undefined  = ''
+  projectKey: string | undefined = ''
   method: Method = 'GET'
 
   private _errorMessages: {[key:string]:string} = {} 
@@ -19,7 +19,7 @@ export class BaseSearchInfo implements ApiInfo, SearchInfo {
   token:string = ''
 
   constructor(searchInfo?:SearchInfo){
-    searchInfo = searchInfo ? searchInfo : defaultSearchInfo()
+    this.searchInfo = searchInfo ?? this
   }
 
   load = async(target:string): Promise<SearchInfo> => {
@@ -32,11 +32,20 @@ export class BaseSearchInfo implements ApiInfo, SearchInfo {
     return this._errorMessages
   }
 
+  set searchInfo(val:SearchInfo){
+    this.title = val.title
+    this.endpoint = val.endpoint
+    this.auth = val.auth
+    this.email = val.email
+    this.projectKey = val.projectKey
+  }
+
   isError:boolean = this.errorMessages ? true : false
 
 
   checkValue = (key:SearchConfigKey, value:string|null|undefined):boolean => {
     // 値がundefinedの場合はチェックしない
+    console.log(key, value)
     if (value === undefined) return true
     switch(key){
       case 'endpoint':
@@ -98,7 +107,6 @@ export class BaseSearchInfo implements ApiInfo, SearchInfo {
     if (!value) return false
     return value.length > 0 ? true : false
   }
-
 
   get uriWithParam(): string {
     if (!this.endpoint) throw new Error('endpoint is not defined')

@@ -1,4 +1,4 @@
-import { SearchInfo, defaultSearchInfo } from './searchInfoModel';
+import { SearchInfo } from './searchInfoModel';
 import { Headers } from './apiInfo';
 import { keywordsArrToStr } from '../util';
 import { Buffer } from 'buffer';
@@ -15,9 +15,8 @@ export class ConfluenceSearchInfo extends BaseSearchInfo  {
   projectKey = undefined
 
   constructor(searchInfo?:SearchInfo){
-    searchInfo = searchInfo ? searchInfo : defaultSearchInfo('confluence')
     super(searchInfo)
-    if (this.searchType != searchInfo.searchType) throw new Error('invalid search type')
+    if (searchInfo && this.searchType != searchInfo.searchType) throw new Error('invalid search type')
     console.log(searchInfo)
   }
 

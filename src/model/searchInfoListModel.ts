@@ -1,6 +1,7 @@
-import { SearchInfo, FixedSearchInfo, defaultSearchInfo, newSearchInfo } from './searchInfoModel';
+import { SearchInfo, FixedSearchInfo } from './searchInfoModel';
 import { BacklogSearchInfo} from './backlogSearchInfo';
 import { ConfluenceSearchInfo } from './confluenceSearchInfo';
+import { BaseSearchInfo } from './baseSearchInfo';
 
 type FixedSearchInfoList = {
   [value: string]: FixedSearchInfo;
@@ -15,8 +16,7 @@ type SearchType =  keyof typeof searchInfoLists;
 const searchInfoLists:SearchInfoList = {
   backlog: new BacklogSearchInfo(),
   confluence: new ConfluenceSearchInfo(),
-  other: defaultSearchInfo(),
-  none: newSearchInfo
+  none: new BaseSearchInfo()
 }
 
 export type { SearchInfo, FixedSearchInfo, SearchInfoList, FixedSearchInfoList, SearchType };

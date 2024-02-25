@@ -11,8 +11,8 @@ function SearchTypeFields(prop:{searchInfo:SearchInfo ,upsertSearchInfo:Function
   }
   
 
-  const onFocusOut = async () => {
-      prop.saveSearchInfo()
+  const onFocusOut = async (e:React.ChangeEvent<HTMLInputElement>  ) => {
+    prop.saveSearchInfo(e.target.name as SearchConfigKey, e.target.value)
   }
 
   const createInputForm = (key:SearchConfigKey) => {
@@ -34,7 +34,7 @@ function SearchTypeFields(prop:{searchInfo:SearchInfo ,upsertSearchInfo:Function
                 // 変更した値をstateに反映させる
                 onChange={(e) => onChangeText(key, e)} 
                 // 変更した値をストレージに格納し、確定させる
-                onBlur={() => onFocusOut()}
+                onBlur={(e) => onFocusOut(e)}
                 name={key} 
                 value={val??''}
               >

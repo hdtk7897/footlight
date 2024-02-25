@@ -1,15 +1,16 @@
 import { useState, useLayoutEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { SearchInfoManager } from '../model/searchInfoManager';
-import { SearchInfo,  FixedSearchInfo, newSearchInfo } from '../model/searchInfoModel';
+import { SearchInfo,  FixedSearchInfo, SearchConfigKey } from '../model/searchInfoModel';
+import { BaseSearchInfo } from '../model/baseSearchInfo';
 import { BacklogSearchInfo } from '../model/backlogSearchInfo';
 import { ConfluenceSearchInfo } from '../model/confluenceSearchInfo';
 import { SearchType, searchInfoLists } from '../model/searchInfoListModel'
 import { SearchTypeFields } from './SearchTypeFields';
 
 const EditSearchItem = () => {
-  const [searchInfoObj, setSearchInfoObj] = useState< BacklogSearchInfo | ConfluenceSearchInfo | SearchInfo >(
-    newSearchInfo
+  const [searchInfoObj, setSearchInfoObj] = useState< BacklogSearchInfo | ConfluenceSearchInfo | BaseSearchInfo >(
+    new BaseSearchInfo()
   )
   const [searchInfoKey, setsearchInfoKey] = useState<string >(
     useLocation().state.key as string
@@ -20,16 +21,33 @@ const EditSearchItem = () => {
     const searchInfoManager = await SearchInfoManager.init()
     const searchInfoItem = searchInfoManager.getSearchInfo(searchInfoKey) 
     if (!searchInfoItem) return null;
-    setSearchInfoObj(searchInfoItem);
+    setSearchInfoAsSearchType(searchInfoItem);
+  }
+
+  const setSearchInfoAsSearchType = (val:SearchInfo, key?:SearchType) => {
+    if (!key) key = val.searchType as SearchType ?? 'none'
+    switch (key) {
+      case 'backlog':
+        setSearchInfoObj(new BacklogSearchInfo(val))
+        break;
+      case 'confluence':
+        setSearchInfoObj(new ConfluenceSearchInfo(val))
+        break;
+      default:
+        setSearchInfoObj(new BaseSearchInfo(val))
+    }
   }
 
   const upsertSearchInfo = (val:SearchInfo) => {
     setChangeFlag(true)
-    setSearchInfoObj(val)
+    searchInfoObj.searchInfo = val
+    console.log(`upsert`, searchInfoObj)
+    setSearchInfoObj(searchInfoObj)
   }
   
-  const saveSearchInfo = () => {
+  const saveSearchInfo = (target:SearchConfigKey, value:string) => {
     if (!changeFlag || searchInfoObj.isError) return
+    searchInfoObj.checkValue(target, value)
     const awaitSaveSearchInfo = async () => {
       const searchInfoManager = await SearchInfoManager.init()
       if (isNew()){
@@ -50,10 +68,10 @@ const EditSearchItem = () => {
         changeSearchInfoObj = new ConfluenceSearchInfo()
         break
       default:
-        changeSearchInfoObj = newSearchInfo
+        changeSearchInfoObj = new BaseSearchInfo()
     }
     changeSearchInfoObj.title = "新規作成"
-    upsertSearchInfo(changeSearchInfoObj)
+    setSearchInfoAsSearchType(changeSearchInfoObj)
   }
   
   const searchTypeList = () => {
