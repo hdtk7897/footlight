@@ -21,28 +21,15 @@ const EditSearchItem = () => {
     const searchInfoManager = await SearchInfoManager.init()
     const searchInfoItem = searchInfoManager.getSearchInfo(searchInfoKey) 
     if (!searchInfoItem) return null;
-    setSearchInfoAsSearchType(searchInfoItem);
-  }
-
-  const setSearchInfoAsSearchType = (val:SearchInfo, key?:SearchType) => {
-    if (!key) key = val.searchType as SearchType ?? 'none'
-    switch (key) {
-      case 'backlog':
-        setSearchInfoObj(new BacklogSearchInfo(val))
-        break;
-      case 'confluence':
-        setSearchInfoObj(new ConfluenceSearchInfo(val))
-        break;
-      default:
-        setSearchInfoObj(new BaseSearchInfo(val))
-    }
+    setSearchInfoObj(initSearchInfoAsSearchType(searchInfoItem))
   }
 
   const upsertSearchInfo = (val:SearchInfo) => {
     setChangeFlag(true)
-    searchInfoObj.searchInfo = val
+    const searchInfoObjClone = Object.assign(initSearchInfoAsSearchType(searchInfoObj)) 
+    searchInfoObjClone.searchInfo = val
     console.log(`upsert`, searchInfoObj)
-    setSearchInfoObj(searchInfoObj)
+    setSearchInfoObj(searchInfoObjClone)
   }
   
   const saveSearchInfo = (target:SearchConfigKey, value:string) => {
@@ -59,21 +46,23 @@ const EditSearchItem = () => {
   }
 
   const changeSearchType = (e:SearchType) => {
-    let changeSearchInfoObj:SearchInfo
-    switch (e) {
-      case 'backlog':
-        changeSearchInfoObj = new BacklogSearchInfo()
-        break
-      case 'confluence':
-        changeSearchInfoObj = new ConfluenceSearchInfo()
-        break
-      default:
-        changeSearchInfoObj = new BaseSearchInfo()
-    }
-    changeSearchInfoObj.title = "新規作成"
-    setSearchInfoAsSearchType(changeSearchInfoObj)
+    let changeSearchInfoObjClone =  Object.assign(initSearchInfoAsSearchType(searchInfoObj, e))
+    changeSearchInfoObjClone.title = "新規作成"
+    setSearchInfoObj(changeSearchInfoObjClone)
   }
   
+  const initSearchInfoAsSearchType = (val:SearchInfo, key?:SearchType) => {
+    if (!key) key = val.searchType as SearchType ?? 'none'
+    switch (key) {
+      case 'backlog':
+        return new BacklogSearchInfo(val)
+      case 'confluence':
+        return new ConfluenceSearchInfo(val)
+      default:
+        return new BaseSearchInfo(val)
+    }
+  }
+
   const searchTypeList = () => {
     return Object.keys(searchInfoLists)
       .filter(key => key !== 'none')
