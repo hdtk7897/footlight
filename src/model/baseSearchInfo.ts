@@ -14,7 +14,7 @@ export class BaseSearchInfo implements ApiInfo, SearchInfo {
   projectKey: string | undefined = ''
   method: Method = 'GET'
 
-  private _errorMessages: {[key:string]:string} = {} 
+  private _errorMessages: {[key:string]:string} = {}
 
   token:string = ''
 
@@ -38,74 +38,83 @@ export class BaseSearchInfo implements ApiInfo, SearchInfo {
     this.auth = val.auth
     this.email = val.email
     this.projectKey = val.projectKey
+    this._errorMessages = val.errorMessages ?? {}
   }
 
-  isError:boolean = this.errorMessages ? true : false
+  isError:boolean = Object.keys(this.errorMessages).length > 0 ? true : false
 
 
   checkValue = (key:SearchConfigKey, value:string|null|undefined):boolean => {
     // 値がundefinedの場合はチェックしない
-    console.log(key, value)
+    console.log(`check val`, key, value)
     if (value === undefined) return true
+    let isError = false
     switch(key){
       case 'endpoint':
-        return this.checkEndpoint(value)
+        isError = this.checkEndpoint(value)
+        break
       case 'email':
-        return this.checkEmail(value)
+        isError = this.checkEmail(value)
+        break
       case 'title':
-        return this.checkTitle(value)
+        isError = this.checkTitle(value)
+        break
       case 'auth':
-        return this.checkAuth(value)
+        isError = this.checkAuth(value)
+        break
       case 'projectKey':
-        return this.checkProjectKey(value)
+        isError = this.checkProjectKey(value)
+        break
       default:
-        return true
+        isError = true
     }
+    if (!isError) delete this._errorMessages[key]
+    return isError
   }
 
   checkEndpoint = (value:string|null):boolean => {
     if (!value?.match(/^https:\/\/.+/)){
       this._errorMessages['endpoint'] = 'エンドポイントはhttps://から始まるURLを入力してください'
-      return false
+      return true
     }
-    return true
+    return false
   }
 
   checkEmail = (value:string|null):boolean => {
     if (!value?.match(/.+@.+\..+/)){
       this._errorMessages['email'] = 'メールアドレスを入力してください'
-      return false
+      return true
     } 
-    return true
+    return false
   }
 
   checkTitle = (value:string|null):boolean => {
     if (!this.hasValue(value)) {
       this._errorMessages['title'] = 'タイトルを入力してください'
-      return false
+      return true
     }
-    return true
+    return false
   }
 
   checkAuth = (value:string|null):boolean => {
     if (!this.hasValue(value)) {
       this._errorMessages['auth'] = '認証情報を入力してください'
-      return false
+      return true
     }
-    return true
+    return false
   }
 
   checkProjectKey = (value:string|null):boolean => {
     if (!this.hasValue(value)) {
       this._errorMessages['projectkey'] = 'プロジェクトキーを入力してください'
-      return false
+      return true
     }
-    return true
+    return false
   }
 
   hasValue = (value:string|null):boolean => {
-    if (!value) return false
-    return value.length > 0 ? true : false
+    if (!value) return true
+    return value.length > 0 ? false : true
   }
 
   get uriWithParam(): string {
@@ -117,6 +126,5 @@ export class BaseSearchInfo implements ApiInfo, SearchInfo {
     return {
     }
   }
-
 
 }

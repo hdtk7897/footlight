@@ -3,7 +3,6 @@ import { UserSearchList } from "./userSearchList";
 import { EditSearchItem } from "./editSearchItem";
 import { createRoot } from 'react-dom/client';
 import '../css/options.css'
-import '../css/button.css'
 
 const Options = () => {
   return (

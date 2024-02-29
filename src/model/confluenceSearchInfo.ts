@@ -17,7 +17,6 @@ export class ConfluenceSearchInfo extends BaseSearchInfo  {
   constructor(searchInfo?:SearchInfo){
     super(searchInfo)
     if (searchInfo && this.searchType != searchInfo.searchType) throw new Error('invalid search type')
-    console.log(searchInfo)
   }
 
   get uriWithParam(): string {
@@ -30,10 +29,6 @@ export class ConfluenceSearchInfo extends BaseSearchInfo  {
       Accept: 'application/json',
       Authorization: `Basic ${this.base64auth}`,
     }
-  }
-
-  get errorMessages(): {[key:string]:string}  {
-    return {}
   }
 
   protected get base64auth(): string {

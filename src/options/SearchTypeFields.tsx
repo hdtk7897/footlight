@@ -40,6 +40,9 @@ function SearchTypeFields(prop:{searchInfo:SearchInfo ,upsertSearchInfo:Function
               >
               </input>
             </div>
+            <div className="text-red-500">
+              {prop.searchInfo.errorMessages[key]}
+            </div>
           </>
         ) 
       // case 'boolean':

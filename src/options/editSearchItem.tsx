@@ -33,8 +33,12 @@ const EditSearchItem = () => {
   }
   
   const saveSearchInfo = (target:SearchConfigKey, value:string) => {
-    if (!changeFlag || searchInfoObj.isError) return
-    searchInfoObj.checkValue(target, value)
+    const searchInfoObjClone = Object.assign(initSearchInfoAsSearchType(searchInfoObj)) 
+    if (!changeFlag) return
+    searchInfoObjClone.checkValue(target, value)
+    // searchInfoObj.checkValue(target, value)
+    setSearchInfoObj(searchInfoObjClone)
+    if (searchInfoObj.isError) return
     const awaitSaveSearchInfo = async () => {
       const searchInfoManager = await SearchInfoManager.init()
       if (isNew()){
@@ -52,7 +56,7 @@ const EditSearchItem = () => {
   }
   
   const initSearchInfoAsSearchType = (val:SearchInfo, key?:SearchType) => {
-    if (!key) key = val.searchType as SearchType ?? 'none'
+    if (!key) key = val.searchType as SearchType ?? 'base'
     switch (key) {
       case 'backlog':
         return new BacklogSearchInfo(val)
@@ -102,16 +106,10 @@ const EditSearchItem = () => {
     getSearchInfoData();
   }, []);  
 
-  const errorMessages : {[key:string]:string} = searchInfoObj.errorMessages
 
   return (
     <>
       <Link to={'/'} >&lt;</Link>
-      <ul>
-        {errorMessages && Object.keys(errorMessages).map((key) => {
-          return <li key={key}>{key}:{errorMessages[key]}</li>
-        })}
-      </ul>
       <div>
         {createSearchTypeList()}
       </div>
