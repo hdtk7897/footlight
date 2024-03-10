@@ -24,7 +24,7 @@ chrome.runtime.onInstalled.addListener(async () => {
     const seachInfoManager = await SearchInfoManager.init()
     if (seachInfoManager.hasSearchInfo()){
       console.log(`already exists`)
-      // return
+      return
     }
     await seachInfoManager.truncateStorage()
     await seachInfoManager.saveSearchInfo(config)

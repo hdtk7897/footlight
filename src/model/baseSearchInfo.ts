@@ -41,7 +41,9 @@ export class BaseSearchInfo implements ApiInfo, SearchInfo {
     this._errorMessages = val.errorMessages ?? {}
   }
 
-  isError:boolean = Object.keys(this.errorMessages).length > 0 ? true : false
+  get isError():boolean {
+    return Object.keys(this.errorMessages).length > 0 ? true : false
+  }
 
 
   checkValue = (key:SearchConfigKey, value:string|null|undefined):boolean => {
@@ -73,8 +75,8 @@ export class BaseSearchInfo implements ApiInfo, SearchInfo {
   }
 
   checkEndpoint = (value:string|null):boolean => {
-    if (!value?.match(/^https:\/\/.+/)){
-      this._errorMessages['endpoint'] = 'エンドポイントはhttps://から始まるURLを入力してください'
+    if (!this.hasValue(value)) {
+      this._errorMessages['endpoint'] = 'エンドポイントを入力してください'
       return true
     }
     return false
@@ -113,8 +115,8 @@ export class BaseSearchInfo implements ApiInfo, SearchInfo {
   }
 
   hasValue = (value:string|null):boolean => {
-    if (!value) return true
-    return value.length > 0 ? false : true
+    if (!value) return false
+    return value.length > 0 ? true : false
   }
 
   get uriWithParam(): string {

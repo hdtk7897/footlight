@@ -27,7 +27,7 @@ function SearchTypeFields(prop:{searchInfo:SearchInfo ,upsertSearchInfo:Function
         val = val as string
         return (
           <>
-            <div key={key}>
+            <div className="" key={key}>
               {key}:
               <input 
                 type="text" 

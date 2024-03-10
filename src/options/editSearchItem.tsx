@@ -36,7 +36,6 @@ const EditSearchItem = () => {
     const searchInfoObjClone = Object.assign(initSearchInfoAsSearchType(searchInfoObj)) 
     if (!changeFlag) return
     searchInfoObjClone.checkValue(target, value)
-    // searchInfoObj.checkValue(target, value)
     setSearchInfoObj(searchInfoObjClone)
     if (searchInfoObj.isError) return
     const awaitSaveSearchInfo = async () => {
@@ -50,20 +49,21 @@ const EditSearchItem = () => {
   }
 
   const changeSearchType = (e:SearchType) => {
-    let changeSearchInfoObjClone =  Object.assign(initSearchInfoAsSearchType(searchInfoObj, e))
+    let changeSearchInfoObjClone =  Object.assign(initSearchInfoAsSearchType(undefined, e))
     changeSearchInfoObjClone.title = "新規作成"
     setSearchInfoObj(changeSearchInfoObjClone)
   }
   
-  const initSearchInfoAsSearchType = (val:SearchInfo, key?:SearchType) => {
-    if (!key) key = val.searchType as SearchType ?? 'base'
-    switch (key) {
+  const initSearchInfoAsSearchType = (searchInfo?:SearchInfo, searchType?:SearchType) => {
+    // searchTypeかsearchInfoのいずれかが入る。searchTypeが入っている場合は新規作成
+    if (!searchType) searchType = searchInfo?.searchType as SearchType ?? 'base'
+    switch (searchType) {
       case 'backlog':
-        return new BacklogSearchInfo(val)
+        return new BacklogSearchInfo(searchInfo)
       case 'confluence':
-        return new ConfluenceSearchInfo(val)
+        return new ConfluenceSearchInfo(searchInfo)
       default:
-        return new BaseSearchInfo(val)
+        return new BaseSearchInfo(searchInfo)
     }
   }
 
@@ -101,11 +101,9 @@ const EditSearchItem = () => {
     return searchInfoKey === '0'
   }
   
-
   useLayoutEffect(() => {
     getSearchInfoData();
   }, []);  
-
 
   return (
     <>
