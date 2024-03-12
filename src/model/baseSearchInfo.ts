@@ -16,7 +16,7 @@ export class BaseSearchInfo implements ApiInfo, SearchInfo {
 
   private _errorMessages: {[key:string]:string} = {}
 
-  token:string = ''
+  // token:string = ''
 
   constructor(searchInfo?:SearchInfo){
     this.searchInfo = searchInfo ?? this
@@ -48,7 +48,6 @@ export class BaseSearchInfo implements ApiInfo, SearchInfo {
 
   checkValue = (key:SearchConfigKey, value:string|null|undefined):boolean => {
     // 値がundefinedの場合はチェックしない
-    console.log(`check val`, key, value)
     if (value === undefined) return true
     let isError = false
     switch(key){
@@ -70,7 +69,25 @@ export class BaseSearchInfo implements ApiInfo, SearchInfo {
       default:
         isError = true
     }
+    BaseSearchInfo.mandatoryCheck(this)
     if (!isError) delete this._errorMessages[key]
+    return isError
+  }
+
+  static mandatoryCheck = (searchInfo:SearchInfo):boolean => {
+    let isError = false
+    const keys:SearchConfigKey[] = Object.keys(searchInfo) as SearchConfigKey[]
+    keys.forEach((key:SearchConfigKey) => {
+      if (searchInfo[key] === undefined) {
+        return
+      }else if (searchInfo[key] === null || searchInfo[key] === '') {
+        isError = true
+        // console.log(`mandatoryCheck: ${key} is empty`)
+        // console.log(searchInfo[key])
+        searchInfo.errorMessages['mandatory'] = '入力してください'
+      }
+    })
+    if (!isError) delete searchInfo.errorMessages['mandatory']
     return isError
   }
 

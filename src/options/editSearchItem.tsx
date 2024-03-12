@@ -12,7 +12,7 @@ const EditSearchItem = () => {
   const [searchInfoObj, setSearchInfoObj] = useState< BacklogSearchInfo | ConfluenceSearchInfo | BaseSearchInfo >(
     new BaseSearchInfo()
   )
-  const [searchInfoKey, setsearchInfoKey] = useState<string >(
+  const [searchInfoKey, setSearchInfoKey] = useState<string >(
     useLocation().state.key as string
   )
   const [changeFlag, setChangeFlag] = useState<boolean>(false);
@@ -28,7 +28,6 @@ const EditSearchItem = () => {
     setChangeFlag(true)
     const searchInfoObjClone = Object.assign(initSearchInfoAsSearchType(searchInfoObj)) 
     searchInfoObjClone.searchInfo = val
-    console.log(`upsert`, searchInfoObj)
     setSearchInfoObj(searchInfoObjClone)
   }
   
@@ -38,25 +37,30 @@ const EditSearchItem = () => {
     searchInfoObjClone.checkValue(target, value)
     setSearchInfoObj(searchInfoObjClone)
     if (searchInfoObj.isError) return
+
     const awaitSaveSearchInfo = async () => {
+      let updateKey = searchInfoKey
       const searchInfoManager = await SearchInfoManager.init()
       if (isNew()){
-        setsearchInfoKey(await searchInfoManager.payoutSearchInfoKey())
+        updateKey = await searchInfoManager.payoutSearchInfoKey()
       }
-      await searchInfoManager.updateSearchInfo(searchInfoObj as FixedSearchInfo, searchInfoKey)
+      setSearchInfoKey(updateKey)
+      await searchInfoManager.updateSearchInfo(searchInfoObj as FixedSearchInfo, updateKey)
     }
+    
     awaitSaveSearchInfo();
   }
 
   const changeSearchType = (e:SearchType) => {
-    let changeSearchInfoObjClone =  Object.assign(initSearchInfoAsSearchType(undefined, e))
+    let changeSearchInfoObjClone =  Object.assign(initSearchInfoAsSearchType(searchInfoObj, e))
     changeSearchInfoObjClone.title = "新規作成"
     setSearchInfoObj(changeSearchInfoObjClone)
   }
   
-  const initSearchInfoAsSearchType = (searchInfo?:SearchInfo, searchType?:SearchType) => {
-    // searchTypeかsearchInfoのいずれかが入る。searchTypeが入っている場合は新規作成
-    if (!searchType) searchType = searchInfo?.searchType as SearchType ?? 'base'
+  const initSearchInfoAsSearchType = (_searchInfo:SearchInfo, initSearchType?:SearchType) => {
+    // initSearchTypeが入っている場合は新規作成
+    const searchType = initSearchType ?? _searchInfo?.searchType as SearchType ?? 'base'
+    const searchInfo = initSearchType ? undefined : _searchInfo
     switch (searchType) {
       case 'backlog':
         return new BacklogSearchInfo(searchInfo)

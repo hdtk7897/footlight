@@ -56,12 +56,15 @@ export class SearchInfoManager {
   }
 
   payoutSearchInfoKey = ():string => {
+    const searchInfoKeys = this.getSearchInfoKeys()
+    if (searchInfoKeys.length === 0) return "1"
     const intSearchInfoKeys =  this.getSearchInfoKeys().map(str => parseInt(str, 10))
     const maxVal = Math.max(...intSearchInfoKeys) + 1
+    console.log(`maxVal`, maxVal)
     return maxVal.toString()
   }
 
-  saveSearchInfo:SaveSearchInfo = async (searchInfo:FixedSearchInfo | FixedSearchInfoList) => {
+  addSearchInfo:SaveSearchInfo = async (searchInfo:FixedSearchInfo | FixedSearchInfoList) => {
     let searchInfos:FixedSearchInfoList = {}
     if (isFixedSearchInfo(searchInfo)){
       searchInfos["1"] = searchInfo
@@ -74,7 +77,6 @@ export class SearchInfoManager {
   }
 
   updateSearchInfo = async (fixedSeachinfo:FixedSearchInfo, key:string) => {
-    console.log(`saving`);
     (async () => {
       this.searchlists[key] = fixedSeachinfo
       chrome.storage.local.set({ searchlist: this.searchlists }, () => {

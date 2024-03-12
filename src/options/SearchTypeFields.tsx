@@ -19,7 +19,6 @@ function SearchTypeFields(prop:{searchInfo:SearchInfo ,upsertSearchInfo:Function
     if (!prop.searchInfo) return null
     let val = prop.searchInfo[key]
     const keyType = typeof val
-    console.log(`key:${key}, keyType:${keyType}, val:${val}`)
     if (val === undefined) return null
     switch (keyType) {
       case 'string':
@@ -87,6 +86,10 @@ function SearchTypeFields(prop:{searchInfo:SearchInfo ,upsertSearchInfo:Function
       {createInputForm("email") }
       {createInputForm("projectKey")}
       {createInputForm("auth")}
+      <div className="text-red-500">
+        {prop.searchInfo.errorMessages['mandatory']}
+      </div>
+
     </>
   )  
 }
