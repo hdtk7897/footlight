@@ -3,9 +3,13 @@ import '../css/options.css'
 import '../css/button.css'
 
 const Popup = () => {
+  const handleSettingsClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    chrome.runtime.openOptionsPage()
+  };
+
   return (
     <>
-      popup page
+      <a href="#" onClick={handleSettingsClick}>footlight settings</a>
     </>
   );
 }

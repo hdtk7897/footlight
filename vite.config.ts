@@ -41,6 +41,14 @@ const manifest = defineManifest({
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), crx({ manifest })],
+  server: {
+    port: 5173,
+    hmr: {
+        host: "localhost",
+        protocol: "ws",
+        port: 5173,
+    },
+  },
   build: {
     rollupOptions: {
       input: {

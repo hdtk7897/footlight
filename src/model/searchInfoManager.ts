@@ -21,7 +21,6 @@ export class SearchInfoManager {
   public static async init():Promise<SearchInfoManager> {
     const searchInfoManager = new SearchInfoManager()
     const storageResult = await this.getStorage('searchlist')
-
     searchInfoManager.searchlists = storageResult.searchlist
     return searchInfoManager
   }
@@ -36,6 +35,7 @@ export class SearchInfoManager {
   }
 
   hasSearchInfo = (key?:string):boolean => {
+    if (!this.searchlists) return false
     if (!key) {
       return Object.keys(this.searchlists).length > 0
     }else {

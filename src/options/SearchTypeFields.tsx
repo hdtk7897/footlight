@@ -27,8 +27,10 @@ function SearchTypeFields(prop:{searchInfo:SearchInfo ,upsertSearchInfo:Function
         return (
           <>
             <div className="" key={key}>
-              {key}:
-              <input 
+              <label htmlFor={key} className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                {key}:
+              </label>
+              <input className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 type="text" 
                 // 変更した値をstateに反映させる
                 onChange={(e) => onChangeText(key, e)} 
@@ -81,15 +83,16 @@ function SearchTypeFields(prop:{searchInfo:SearchInfo ,upsertSearchInfo:Function
 
   return (
     <>
-      {createInputForm("title")}
-      {createInputForm("endpoint")}
-      {createInputForm("email") }
-      {createInputForm("projectKey")}
-      {createInputForm("auth")}
-      <div className="text-red-500">
-        {prop.searchInfo.errorMessages['mandatory']}
+      <div className="grid gap-6 mb-6 md:grid-cols-2">
+        {createInputForm("title")}
+        {createInputForm("endpoint")}
+        {createInputForm("email") }
+        {createInputForm("projectKey")}
+        {createInputForm("auth")}
+        <div className="text-red-500">
+          {prop.searchInfo.errorMessages['mandatory']}
+        </div>
       </div>
-
     </>
   )  
 }
