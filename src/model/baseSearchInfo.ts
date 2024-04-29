@@ -5,6 +5,8 @@ import { SearchInfoManager } from './searchInfoManager';
 export class BaseSearchInfo implements ApiInfo, SearchInfo {
   readonly searchType:string = 'none'
   readonly searchTypeName: string  = 'none'
+  maxResults = 20
+
 
   keywords:string[] = []
   title = '新規作成'
