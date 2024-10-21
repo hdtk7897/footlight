@@ -15,6 +15,7 @@ type SearchInfo =
 SearchInfoConfig & {
     isError: boolean;
     errorMessages: {[key:string]:string};
+    getTitle: (value:string) => string;
 }
 
 type SearchConfigKey = keyof SearchInfoConfig;

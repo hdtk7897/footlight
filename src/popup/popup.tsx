@@ -1,15 +1,16 @@
 import { createRoot } from 'react-dom/client';
+import '../../tailwind.min.js'
 import '../css/options.css'
 import '../css/button.css'
 
 const Popup = () => {
-  const handleSettingsClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+  const handleSettingsClick = () => {
     chrome.runtime.openOptionsPage()
   };
 
   return (
     <>
-      <a href="#" onClick={handleSettingsClick}>footlight settings</a>
+      <a href="#" className="option_text no-underline hover:underline" onClick={handleSettingsClick}>	&#x2699;settings</a>
     </>
   );
 }

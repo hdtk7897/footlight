@@ -2,9 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-body{
-  width: 200px;
+
+.option_text {
+  font-size: 1.5rem;
+  color: #095776;
+  font-weight: 600;
+  margin-bottom: 10px;
 }
+
 
 .button_plus {
     position: absolute;

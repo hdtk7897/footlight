@@ -2,6 +2,7 @@ import { MemoryRouter, Routes, Route } from 'react-router-dom'; // Import Memory
 import { UserSearchList } from "./userSearchList";
 import { EditSearchItem } from "./editSearchItem";
 import { createRoot } from 'react-dom/client';
+import '../../tailwind.min.js'
 import '../css/options.css'
 
 const Options = () => {

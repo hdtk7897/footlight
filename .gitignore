@@ -24,3 +24,4 @@ dist-ssr
 *.sw?
 local.config.json
 *.test.ts
+test.http

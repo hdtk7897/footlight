@@ -93,6 +93,23 @@ export class BaseSearchInfo implements ApiInfo, SearchInfo {
     return isError
   }
 
+  getTitle = (value:string):string => {
+    switch (value) {
+      case 'title':
+        return '検索種別';
+      case 'endpoint':
+        return 'エンドポイント';
+      case 'email':
+        return 'メールアドレス';
+      case 'projectKey':
+        return 'プロジェクトキー';
+      case 'auth':
+        return '認証情報';
+      default:
+        return '';
+    }
+  }
+
   checkEndpoint = (value:string|null):boolean => {
     if (!this.hasValue(value)) {
       this._errorMessages['endpoint'] = 'エンドポイントを入力してください'

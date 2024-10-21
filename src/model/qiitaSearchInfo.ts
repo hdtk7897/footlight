@@ -1,7 +1,6 @@
 import { SearchInfo } from './searchInfoModel';
 import { Headers } from './apiInfo';
 import { keywordsArrToStr } from '../util';
-import { Buffer } from 'buffer';
 import { BaseSearchInfo } from './baseSearchInfo';
 
 /**
@@ -10,6 +9,7 @@ import { BaseSearchInfo } from './baseSearchInfo';
 
 export class QiitaSearchInfo extends BaseSearchInfo  {
   readonly searchType:string = 'qiita'
+  readonly searchTypeName: string  = 'qiita'
 
   projectKey = undefined
 

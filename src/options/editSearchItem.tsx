@@ -111,16 +111,18 @@ const EditSearchItem = () => {
 
   return (
     <>
-      <Link to={'/'} >&lt;</Link>
-      <div>
-        {createSearchTypeList()}
-      </div>
-      <div>
-        <SearchTypeFields
-          searchInfo={searchInfoObj as SearchInfo }
-          upsertSearchInfo={upsertSearchInfo}
-          saveSearchInfo={saveSearchInfo}
-        />
+      <div className="m-2 p-4">
+        <Link to={'/'} className="text-sm text-blue-800 hover:text-blue-600" >&lt;</Link>
+        <div className="text-sm" >
+          {createSearchTypeList()}
+        </div>
+        <div>
+          <SearchTypeFields
+            searchInfo={searchInfoObj as SearchInfo }
+            upsertSearchInfo={upsertSearchInfo}
+            saveSearchInfo={saveSearchInfo}
+          />
+        </div>
       </div>
     </>
   );

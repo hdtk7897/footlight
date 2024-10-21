@@ -18,8 +18,14 @@ function SearchTypeFields(prop:{searchInfo:SearchInfo ,upsertSearchInfo:Function
   const createInputForm = (key:SearchConfigKey) => {
     if (!prop.searchInfo) return null
     let val = prop.searchInfo[key]
+    console.log(val)
     const keyType = typeof val
     if (val === undefined) return null
+
+    let title = prop.searchInfo.getTitle(key);
+    // title = 'title' in val ? (val as SearchInfoItem).title : '';
+ 
+
     switch (keyType) {
       case 'string':
       case 'object':
@@ -28,7 +34,7 @@ function SearchTypeFields(prop:{searchInfo:SearchInfo ,upsertSearchInfo:Function
           <>
             <div className="" key={key}>
               <label htmlFor={key} className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                {key}:
+                {title}:
               </label>
               <input className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 type="text" 
