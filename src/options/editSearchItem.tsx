@@ -2,14 +2,12 @@ import { useState, useLayoutEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { SearchInfoManager } from '../model/searchInfoManager';
 import { SearchInfo,  FixedSearchInfo, SearchConfigKey } from '../model/searchInfoModel';
+import { SearchType, searchInfoLists, initSearchInfoAsSearchType } from '../model/searchInfoListModel'
 import { BaseSearchInfo } from '../model/baseSearchInfo';
-import { BacklogSearchInfo } from '../model/backlogSearchInfo';
-import { ConfluenceSearchInfo } from '../model/confluenceSearchInfo';
-import { SearchType, searchInfoLists } from '../model/searchInfoListModel'
 import { SearchTypeFields } from './SearchTypeFields';
 
 const EditSearchItem = () => {
-  const [searchInfoObj, setSearchInfoObj] = useState< BacklogSearchInfo | ConfluenceSearchInfo | BaseSearchInfo >(
+  const [searchInfoObj, setSearchInfoObj] = useState< SearchInfo >(
     new BaseSearchInfo()
   )
   const [searchInfoKey, setSearchInfoKey] = useState<string >(
@@ -57,19 +55,6 @@ const EditSearchItem = () => {
     setSearchInfoObj(changeSearchInfoObjClone)
   }
   
-  const initSearchInfoAsSearchType = (_searchInfo:SearchInfo, initSearchType?:SearchType) => {
-    // initSearchTypeが入っている場合は新規作成
-    const searchType = initSearchType ?? _searchInfo?.searchType as SearchType ?? 'base'
-    const searchInfo = initSearchType ? undefined : _searchInfo
-    switch (searchType) {
-      case 'backlog':
-        return new BacklogSearchInfo(searchInfo)
-      case 'confluence':
-        return new ConfluenceSearchInfo(searchInfo)
-      default:
-        return new BaseSearchInfo(searchInfo)
-    }
-  }
 
   const searchTypeList = () => {
     return Object.keys(searchInfoLists)
@@ -94,7 +79,7 @@ const EditSearchItem = () => {
     }else{
       const searchType = searchInfoObj?.searchType || 'none'
       return (
-        <select disabled>
+        <select disabled className="disabled:bg-gray-100 text-gray-500">
           <option value={searchType} key="disabled">{searchType}</option>
         </select>
       )
@@ -112,10 +97,11 @@ const EditSearchItem = () => {
   return (
     <>
       <div className="m-2 p-4">
-        <Link to={'/'} className="text-sm text-blue-800 hover:text-blue-600" >&lt;</Link>
-        <div className="text-sm" >
+        <Link to={'/'} className="text-lg text-blue-800 hover:text-blue-600" >&lt;</Link>
+        <div className="text-lg" >
           {createSearchTypeList()}
         </div>
+        <br/>
         <div>
           <SearchTypeFields
             searchInfo={searchInfoObj as SearchInfo }
