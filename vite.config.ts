@@ -35,7 +35,7 @@ const manifest = defineManifest({
       ]
     }
   ],
-  options_page: "src/options/options.html"
+  options_page: "src/options/options.html",
 });
 
 // https://vitejs.dev/config/

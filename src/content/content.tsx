@@ -1,6 +1,8 @@
 import { Article, RefArticles } from '../model/refInfo' 
-import ReactDOM from 'react-dom';
 import { getParam, bSubstr } from '../util';
+import { createRoot } from 'react-dom/client';
+import '../css/content.css'
+
 
 const descriptionLength = 100
 
@@ -25,31 +27,11 @@ const attachResult = (refarticles:RefArticles) => {
   if (!refarticles) return
   const articles:Article[] = refarticles.articles
   if (articles.length < 1) return
-  const rcntDom:HTMLElement|null = document.querySelector<HTMLElement>('#rcnt')
-  const rhsDom:HTMLElement|null = document.querySelector<HTMLElement>('#rhs')
-  const summaryObj:HTMLDivElement = document.createElement('div')
+  
+  const centerColumnDom:HTMLElement|null = document.querySelector<HTMLElement>('#center_col')
   const resultObj:HTMLDivElement = document.createElement('div')
-  if(rhsDom){
-    rhsDom.appendChild(summaryObj)
-    rhsDom.appendChild(resultObj)
-
-  }else if (rcntDom){
-    const newRhsDom:HTMLDivElement = document.createElement('div')
-    newRhsDom.setAttribute("id", "rhs");
-    newRhsDom.prepend(summaryObj)
-    newRhsDom.appendChild(resultObj)
-    rcntDom.appendChild(newRhsDom)
-
-  }
-
-  const ResultSummary = () => {
-    return (
-      <div>
-          {refarticles.title}に{articles.length}件の検索結果があります
-      </div>
-    );
-  }
-  ReactDOM.render(<ResultSummary />, summaryObj);
+  // console.log('centerColumnDom', centerColumnDom)
+  centerColumnDom?.parentElement?.insertBefore(resultObj, centerColumnDom.nextSibling)
 
   const ResultObj = () => {
     const items : JSX.Element[]  = []
@@ -69,12 +51,18 @@ const attachResult = (refarticles:RefArticles) => {
       )
     })
     return (
-      <div>
+      <div id="rhs" className="temp-box">
+        <div>
+          {refarticles.title}に{articles.length}件の検索結果があります
+        </div>
+
         {items}
       </div>
     )
   }
-  ReactDOM.render(<ResultObj />, resultObj);
+  const result = createRoot(resultObj);
+  result.render(<ResultObj />);
 }
+
 
 execute()
