@@ -1,8 +1,9 @@
 import { Article, RefArticles } from '../model/refInfo' 
 import { getParam, bSubstr } from '../util';
 import { createRoot } from 'react-dom/client';
+import { Tabs, Tab } from "./tabs";
+import '../../tailwind.min.js'
 import '../css/content.css'
-
 
 const descriptionLength = 100
 
@@ -50,16 +51,39 @@ const attachResult = (refarticles:RefArticles) => {
         </div>
       )
     })
-    return (
-      <div id="rhs" className="temp-box">
-        <div>
-          {refarticles.title}に{articles.length}件の検索結果があります
-        </div>
 
-        {items}
-      </div>
-    )
-  }
+
+
+    return (
+      <>
+        <div id="rhs" className='temp-box'>
+          <div>
+            {refarticles.title}に{articles.length}件の検索結果があります
+
+            <Tabs>
+              <Tab label="Tab 1">
+                <div>
+                  {items}
+                </div>
+              </Tab>
+              <Tab label="Tab 2">
+                <div>
+                  {items}
+                </div>
+              </Tab>
+              <Tab label="Tab 3">
+                <div>
+                  {items}
+                </div>
+              </Tab>
+            </Tabs>
+          </div>
+        </div>
+      </>
+    );
+  };
+  
+
   const result = createRoot(resultObj);
   result.render(<ResultObj />);
 }
