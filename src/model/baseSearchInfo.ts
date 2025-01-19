@@ -1,4 +1,4 @@
-import { SearchInfo, SearchConfigKey } from './searchInfoModel';
+import { SearchInfo, SearchConfigKey, urlInput } from './searchInfoModel';
 import { ApiInfo, Headers, Method } from './apiInfo';
 import { SearchInfoManager } from './searchInfoManager';
 
@@ -10,7 +10,7 @@ export class BaseSearchInfo implements ApiInfo, SearchInfo {
 
   keywords:string[] = []
   title = '新規作成'
-  endpoint = ''
+  endpoint: string | urlInput = ''
   auth: string | undefined  = ''
   email: string | undefined  = ''
   projectKey: string | undefined = ''

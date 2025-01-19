@@ -1,4 +1,4 @@
-import { SearchInfo } from './searchInfoModel';
+import { SearchInfo, urlInput } from './searchInfoModel';
 import { Headers } from './apiInfo';
 import { keywordsArrToStr } from '../util';
 import { BaseSearchInfo } from './baseSearchInfo';
@@ -11,6 +11,12 @@ export class QiitaSearchInfo extends BaseSearchInfo  {
   readonly searchType:string = 'qiita'
   readonly searchTypeName: string  = 'qiita'
 
+  endpoint:urlInput = {
+    value: '',
+    inputType: 'url',
+    prefix: 'https://',
+    postfix: '.qiita.com/'
+  }
   projectKey = undefined
 
   constructor(searchInfo?:SearchInfo){

@@ -5,7 +5,7 @@ type SearchInfoConfig =  {
   title: string ;
   searchType: string ;
   searchTypeName: string ;
-  endpoint: string ;
+  endpoint: string | urlInput ;
   email: string | undefined;
   auth: string | undefined;
   projectKey: string | undefined;
@@ -38,7 +38,8 @@ type baseInput = {
 
 type urlInput = baseInput & {
   inputType: 'url'
-  prefix:'https://'
+  prefix:string
+  postfix: string
 }
 
 type Headers = {

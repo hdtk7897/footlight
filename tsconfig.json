@@ -20,6 +20,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
+  "include": ["src", "vite-plugin-touch-global-css.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
