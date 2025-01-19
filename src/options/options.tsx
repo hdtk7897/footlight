@@ -2,8 +2,7 @@ import { MemoryRouter, Routes, Route } from 'react-router-dom'; // Import Memory
 import { UserSearchList } from "./userSearchList";
 import { EditSearchItem } from "./editSearchItem";
 import { createRoot } from 'react-dom/client';
-import '../../min.js'
-import '../css/options.css'
+import '../css/index.css'
 
 const Options = () => {
   return (

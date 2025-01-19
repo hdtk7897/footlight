@@ -2,8 +2,7 @@ import { Article, RefArticles } from '../model/refInfo'
 import { getParam, bSubstr } from '../util';
 import { createRoot } from 'react-dom/client';
 import { Tabs, Tab } from "./tabs";
-import '../../tailwind.min.js'
-import '../css/content.css'
+import '../css/index.css'
 
 const descriptionLength = 100
 

@@ -56,3 +56,12 @@
     background-color: #095776;
     transition: 0.2s;
   }
+
+  .temp-box {
+    margin: 20px 0 20px 0;
+    min-width: 300px;
+    max-width: 500px;
+    overflow: hidden;
+    transition: min-width var(--expand-time) linear;
+  }
+  

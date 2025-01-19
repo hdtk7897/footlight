@@ -1,7 +1,7 @@
 import path from "node:path";
 import { crx, defineManifest } from "@crxjs/vite-plugin";
 import react from "@vitejs/plugin-react";
-import viteTouchGlobalCss from './src/vite-plugin-touch-global-css';
+import viteTouchGlobalCss from './vite-plugin-touch-global-css';
 import { defineConfig } from "vite";
 
 const manifest = defineManifest({
@@ -44,7 +44,7 @@ const manifest = defineManifest({
 export default defineConfig({
   plugins: [react(), crx({ manifest }),
     viteTouchGlobalCss({
-      cssFilePath: path.resolve(__dirname, "src/content/index.css"),
+      cssFilePath: path.resolve(__dirname, "src/css/index.css"),
       watchMatch: /src/,
     }),
   ],

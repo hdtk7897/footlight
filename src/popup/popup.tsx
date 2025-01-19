@@ -1,6 +1,5 @@
 import { createRoot } from 'react-dom/client';
-import '../../tailwind.min.js'
-import '../css/options.css'
+import '../css/index.css'
 import '../css/button.css'
 
 const Popup = () => {
